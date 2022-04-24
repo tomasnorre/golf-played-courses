@@ -38,11 +38,12 @@ class FetchLongAndLatCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $golfCourses = $this->golfCourseRepository->findAll();
+        $counter = 0;
         foreach ($golfCourses as $golfCourse) {
 
-            if(null !== $golfCourse->getLatitude() && null !== $golfCourse->getLongitude()) {
+            /*if($golfCourse->getLatitude() !== null || $golfCourse->getLongitude() !== null) {
                 continue;
-            }
+            }*/
 
             $query = $golfCourse->getGeoname() ?? $golfCourse->getName();
 
@@ -58,13 +59,20 @@ class FetchLongAndLatCommand extends Command
                 $golfCourse->setLatitude($resultJson[0]->lat);
                 $entityManager->persist($golfCourse);
                 $entityManager->flush();
-                $io->success('Geo data is saved');
+                //$io->success('Geo data is saved for ' . $golfCourse->getName());
+
             } else {
-                $io->warning('Geo data could not be updated, check Geoname');
+                $golfCourse->setLatitude(0.0);
+                $golfCourse->setLongitude(0.0);
+                $entityManager->persist($golfCourse);
+                $entityManager->flush();
+                $io->warning('Geo data could not be updated, check Geoname for ' . $golfCourse->getName());
+                $counter++;
             }
 
         }
 
+        $io->warning('Could not update for: ' . $counter);
 
         return Command::SUCCESS;
     }
