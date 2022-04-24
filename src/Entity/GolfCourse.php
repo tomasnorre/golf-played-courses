@@ -29,6 +29,9 @@ class GolfCourse
     #[ORM\Column(type: 'float', nullable: true)]
     private $latitude;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private $Geoname;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class GolfCourse
     public function setLatitude(?float $latitude): self
     {
         $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getGeoname(): ?string
+    {
+        return $this->Geoname;
+    }
+
+    public function setGeoname(?string $Geoname): self
+    {
+        $this->Geoname = $Geoname;
 
         return $this;
     }

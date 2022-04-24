@@ -21,6 +21,7 @@ class GolfCourseCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             Field::new('name'),
+            Field::new('geoname')->onlyOnForms(),
             Field::new('comment'),
             AssociationField::new('country'),
             Field::new('longitude'),
