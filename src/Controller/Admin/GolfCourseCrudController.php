@@ -23,7 +23,7 @@ class GolfCourseCrudController extends AbstractCrudController
             Field::new('name'),
             Field::new('geoname')->onlyOnForms(),
             Field::new('comment'),
-            AssociationField::new('country'),
+            AssociationField::new('country')->autoComplete(),
             Field::new('longitude'),
             Field::new('latitude'),
         ];

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GolfCourseController!{% endblock %}
+
+{% block body %}
+
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <div id="map"></div>
+    <script>
+        // Creating map options
+        var mapOptions = {
+            center: [48.7784485,9.1800132],
+            zoom: 4
+        }
+        // Creating a map object
+        var map = new L.map('map', mapOptions);
+
+        // Creating a Layer object
+        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+        // Adding layer to the map
+        map.addLayer(layer);
+
+        let customIcon = {
+            iconUrl:"http://localhost:8000/images/map/marker.svg",
+            iconSize:[30,30]
+        }
+
+        {% for golfCourse in golfCourses %}
+            let icon{{ golfCourse.id }} = L.icon(customIcon);
+            let iconOptions{{ golfCourse.id }} = {
+                title:"{{ golfCourse.name }}",
+                draggable:true,
+                icon:icon{{ golfCourse.id }}
+            }
+
+            let marker{{ golfCourse.id }} = new L.Marker([{{ golfCourse.latitude}}, {{ golfCourse.longitude }}] , iconOptions{{ golfCourse.id }});
+            marker{{ golfCourse.id }}.addTo(map);
+            marker{{ golfCourse.id }}.bindPopup("{{ golfCourse.name }}").openPopup();
+        {% endfor %}
+
+
+    </script>
+{% endblock %}

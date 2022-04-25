@@ -47,6 +47,15 @@ class GolfCourseRepository extends ServiceEntityRepository
         }
     }
 
+    public function findWithMarker(): array
+    {
+        return $this->createQueryBuilder('g')
+            ->andWhere('g.longitude != :val')
+            ->setParameter('val', 0 )
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     // /**
     //  * @return GolfCourse[] Returns an array of GolfCourse objects
     //  */
